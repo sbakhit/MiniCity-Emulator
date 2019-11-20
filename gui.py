@@ -30,7 +30,6 @@ class Window(Frame):
         Frame.__init__(self, master)
 
         # input variables
-        self.config_file = None
         self.export_file = None
         self.config = Configuration()
 
@@ -60,10 +59,10 @@ class Window(Frame):
         sub_menu_file.add_command(label='Exit', command=quit)
 
     def load_config(self):
-        self.config_file = filedialog.askopenfilename(initialdir=self.directory, title="Select Configuration File",
+        path = filedialog.askopenfilename(initialdir=self.directory, title="Select Configuration File",
                                                   filetypes=(("all files", "*.*"), ("tsv files", "*.tsv"),
                                                              ("csv files", "*.csv"), ("txt files", "*.txt")))
-        self.config.update_config_file(self.config_file)
+        self.config.update_config_file(path)
 
     def export_data(self):
         self.export_file = filedialog.asksaveasfilename(initialdir=self.directory, title="Export Simulation Data",
@@ -75,10 +74,14 @@ class Window(Frame):
         - parse config file
         - connect
         '''
+        self.config.parse()
         print('running')
+        for obj, pts in self.config.data.items():
+            print(pts)
+        print('done')
 
 
-root = Tk()     # create a Tk root window
+root = Tk() # create a Tk root window
 
 root.geometry('512x512')
 

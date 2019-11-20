@@ -1,4 +1,4 @@
-import pandas as pd
+import csv
 
 class Object():
     def __init__(self, weel_radius, speed):
@@ -18,14 +18,19 @@ class Object():
 
 class Configuration():
     def __init__(self, config_file=None):
-        self.config_file = config_file
+        self.path = config_file
+        self.data = {}
 
     def update_config_file(self, config_file):
-        self.config_file = config_file
+        self.path = config_file
 
     def parse(self):
-        if self.config_file == None:
-            raise FileNotFoundError
+        with open(self.path, 'r') as f:
+            reader = csv.reader(f, delimiter=';')
+            next(reader)
 
-        config = pd.from_csv('self.config_file', sep='\t', header=0)
-        print(config)
+            self.data = {}
+            for idx, line in enumerate(reader):
+                self.data[idx] = [pt for pt in line]
+
+        print(self.data)
