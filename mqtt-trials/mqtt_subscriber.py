@@ -1,5 +1,5 @@
 import paho.mqtt.client as mqtt
-import time 
+import time
  
 MQTT_SERVER = "localhost"
 MQTT_PATH = "test_channel"
