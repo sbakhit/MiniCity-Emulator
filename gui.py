@@ -21,7 +21,8 @@ except ImportError:
     import tkinter.ttk as ttk
     py3 = 1
 
-import logic
+from logic import Configuration
+from logic import Object
 
 
 class Window(Frame):
@@ -31,6 +32,7 @@ class Window(Frame):
         # input variables
         self.config_file = None
         self.export_file = None
+        self.config = Configuration()
 
         # initialize variables
         self.directory = os.getcwd()
@@ -61,6 +63,7 @@ class Window(Frame):
         self.config_file = filedialog.askopenfilename(initialdir=self.directory, title="Select Configuration File",
                                                   filetypes=(("all files", "*.*"), ("tsv files", "*.tsv"),
                                                              ("csv files", "*.csv"), ("txt files", "*.txt")))
+        self.config.update_config_file(self.config_file)
 
     def export_data(self):
         self.export_file = filedialog.asksaveasfilename(initialdir=self.directory, title="Export Simulation Data",
