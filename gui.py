@@ -1,25 +1,7 @@
 import os
-
-try:
-    import tkFileDialog as filedialog
-    py3 = 0
-except ImportError:
-    from tkinter import filedialog
-    py3 = 1
-
-try:
-    from Tkinter import *
-    py3 = 0
-except ImportError:
-    from tkinter import *
-    py3 = 1
-
-try:
-    import ttk
-    py3 = 0
-except ImportError:
-    import tkinter.ttk as ttk
-    py3 = 1
+from tkinter import *
+from tkinter import filedialog
+import tkinter.ttk as ttk
 
 from logic import Configuration
 from logic import Object

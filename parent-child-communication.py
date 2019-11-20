@@ -1,6 +1,6 @@
-import multiprocessing 
+import multiprocessing
 
-# read the config file 
+# read the config file
 filepath = 'config.txt'
 
 # store the data points as a list entry
@@ -13,7 +13,7 @@ with open(filepath) as fp:
        # append list entry
        list_of_data_points.append(line)
 
-# child function 
+# child function
 def ack(data, q):
 
     # loop through the data sent by the parent
