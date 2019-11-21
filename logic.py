@@ -6,6 +6,15 @@ import random
 class Grid():
     def __init__(self, size):
         self.grid = [[-1] * size] * size
+    
+    def populate(self, objs):
+        for _, obj in objs.items():
+            i, j = obj.loc
+            self.grid[i][j] = obj.id
+
+    def update(self, obj):
+        i, j = obj.loc
+        self.grid[i][j] = obj.id
 
 
 class Fog():
@@ -51,18 +60,18 @@ class Object():
         self.id = pid
         self.starting_location = starting_location
         self.loc = starting_location
-        
+
         self.connection = False
         self.fog = None
-        self.route = None
+        self.routes = None
 
     def gen_routes(self, num_points):
-        self.route = [self.starting_location]
+        self.routes = [self.starting_location]
 
         for n in range(num_points):
             r = random.randrange(0, 2)
-            i, j = self.route[-1]
-            self.route.append((i + (1 - r), j + r))
+            i, j = self.routes[-1]
+            self.routes.append((i + (1 - r), j + r))
 
     def connect(self):
         # TODO: connect to RPI using MQTT
@@ -91,8 +100,3 @@ class Configuration():
                 self.data[idx] = [pt for pt in line]
 
         print(self.data)
-
-
-if __name__ == "__main__":
-    fog = Fog((1, 2), 2, 1024)
-    print(fog.points)

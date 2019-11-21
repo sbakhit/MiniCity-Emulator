@@ -16,9 +16,10 @@ def on_disconnect(client, userdata, rc):
     print('process {} is disconnected: {}'.format(pid, rc))
 
 def on_message(client, userdata, msg):
-    print('{} {}'.format(msg.topic, msg.payload))
-
-    data = 'test from {} to brain'.format(pid)
+    print('{} received message: {}'.format(msg.topic, msg.payload))
+    # drive
+    # say I'm done
+    data = '{}: location {} reached'.format(pid, msg.payload)
     client.publish(topic=MQTT_PATH_BRAIN, payload=data, qos=1, retain=False)
 
 client = mqtt.Client(client_id=pid)

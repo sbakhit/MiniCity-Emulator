@@ -47,15 +47,15 @@ def generate_routes_old(pids_list, num_points, grid_size):
 
 def generate_objects(pids_list, grid_size):
     objects = {}
-    for idx, _ in enumerate(pids_list):
-        objects[idx] = Object(idx, (random.randrange(0, grid_size), random.randrange(0, grid_size)))
+    for _, pid in enumerate(pids_list):
+        objects[pid] = Object(pid, (random.randrange(0, grid_size), random.randrange(0, grid_size)))
     return objects
 
 def generate_routes(objects, num_points):
     routes_dict = {}
     for pid, obj in objects.items():
         obj.gen_routes(num_points)
-        routes_dict[pid] = obj.route
+        routes_dict[pid] = obj.routes
     return routes_dict
 
 def gen_routes(starting_location, num_points):
