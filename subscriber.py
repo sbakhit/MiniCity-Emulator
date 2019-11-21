@@ -12,15 +12,14 @@ def on_connect(client, userdata, flags, rc):
     print('process {} connection code {}'.format(pid, rc))
     client.subscribe(MQTT_PATH, qos=1)
 
-def on_disconnect(client, userdata, rc):
-    print('process {} is disconnected: {}'.format(pid, rc))
+# def on_disconnect(client, userdata, rc):
+#     print('process {} is disconnected: {}'.format(pid, rc))
 
 def on_message(client, userdata, msg):
     print('{} received message: {}'.format(msg.topic, msg.payload))
     # drive
     # say I'm done
-    data = '{}: location {} reached'.format(pid, msg.payload)
-    client.publish(topic=MQTT_PATH_BRAIN, payload=data, qos=1, retain=False)
+    client.publish(topic=MQTT_PATH_BRAIN, payload=msg.payload, qos=1, retain=False)
 
 client = mqtt.Client(client_id=pid)
 client.on_connect = on_connect
