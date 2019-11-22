@@ -1,4 +1,4 @@
-import csv
+# import csv
 import itertools
 import random
 
@@ -6,11 +6,15 @@ import random
 class Grid():
     def __init__(self, size):
         self.grid = [[-1] * size] * size
-    
+
     def populate(self, objs):
         for _, obj in objs.items():
             i, j = obj.loc
             self.grid[i][j] = obj.id
+
+    def reset(self, obj):
+        i, j = obj.loc
+        self.grid[i][j] = -1
 
     def update(self, obj):
         i, j = obj.loc
@@ -49,10 +53,10 @@ class Fog():
         self.points = self._gen_points()
 
     def add_object(self, obj):
-        self.object.add(obj)
+        self.objects.add(obj)
 
     def remove_object(self, obj):
-        self.object.remove(obj)
+        self.objects.remove(obj)
 
 
 class Object():
@@ -65,7 +69,7 @@ class Object():
         self.fog = None
         self.routes = None
 
-    def gen_routes(self, num_points):
+    def generate_routes(self, num_points):
         self.routes = [self.starting_location]
 
         for n in range(num_points):
@@ -73,13 +77,8 @@ class Object():
             i, j = self.routes[-1]
             self.routes.append((i + (1 - r), j + r))
 
-    def connect(self):
-        # TODO: connect to RPI using MQTT
-        self.connection = True
-
-    def send(self, data):
-        # TODO: send to RPI
-        return False
+    def update_loc(self, location):
+        self.loc = location
 
 
 class Configuration():
@@ -90,13 +89,13 @@ class Configuration():
     def update_path(self, path):
         self.path = path
 
-    def parse(self):
-        with open(self.path, 'r') as f:
-            reader = csv.reader(f, delimiter=';')
-            next(reader)
+    # def parse(self):
+    #     with open(self.path, 'r') as f:
+    #         reader = csv.reader(f, delimiter=';')
+    #         next(reader)
 
-            self.data = {}
-            for idx, line in enumerate(reader):
-                self.data[idx] = [pt for pt in line]
+    #         self.data = {}
+    #         for idx, line in enumerate(reader):
+    #             self.data[idx] = [pt for pt in line]
 
-        print(self.data)
+    #     print(self.data)
