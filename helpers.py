@@ -7,7 +7,9 @@ BROKER_URL = "localhost"
 BROKER_PORT = 1883
 
 WORLD_SIZE = 1024
+NUM_CLIENTS = 5
 NUM_POINTS = 5
+NUM_FOGS = 4
 
 from logic import Object, Fog
 
@@ -23,14 +25,29 @@ def assign_fog(fogs, obj):
         if dst < min_dst:
             min_dst = dst
             fog_idx = idx
+    
+    if fog_idx < 0:
+        # out of range
+        if obj.fog != None:
+            obj.fog.re
+            obj.fog = None
+
 
     if fog_idx < 0:
         if obj.fog != None:
+            print('removing fog {} from object {}'.format(obj.fog.id, obj.id))
             obj.fog.remove_object(obj)
             obj.fog = None
     elif obj.loc in fogs[fog_idx].points:
+        if obj.fog != None:
+            print('removing fog {} from object {}'.format(obj.fog.id, obj.id))
+            obj.fog.remove_object(obj)
+            obj.fog = None
+        print('adding fog {} to object {}'.format(fogs[fog_idx].id, obj.id))
         fogs[fog_idx].add_object(obj)
         obj.fog = fogs[fog_idx]
+    else:
+        obj.fog = None
 
 def assign_objects_fog(fogs, objs):
     for _, obj in objs.items():
@@ -48,6 +65,15 @@ def assign_objects_fog(fogs, objs):
 #             pts.append((i + (1 - r), j + r))
 
 #     return routes_dict
+
+def generate_fogs(count, grid_size):
+    fogs = []
+    for i in range(count):
+        location = (random.randrange(0, grid_size), random.randrange(0, grid_size))
+        radius = random.randrange(0, grid_size//4)
+        fogs.append(Fog(location, radius, grid_size))
+    return fogs
+    
 
 def generate_objects(client_ids, grid_size):
     objects = {}

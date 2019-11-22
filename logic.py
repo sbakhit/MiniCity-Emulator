@@ -1,6 +1,6 @@
-# import csv
 import itertools
 import random
+import uuid
 
 
 class Grid():
@@ -23,6 +23,7 @@ class Grid():
 
 class Fog():
     def __init__(self, location, radius, grid_size):
+        self.id = uuid.uuid1()
         self.loc = location
         self.radius = radius
         self.grid_size = grid_size
@@ -88,14 +89,3 @@ class Configuration():
 
     def update_path(self, path):
         self.path = path
-
-    # def parse(self):
-    #     with open(self.path, 'r') as f:
-    #         reader = csv.reader(f, delimiter=';')
-    #         next(reader)
-
-    #         self.data = {}
-    #         for idx, line in enumerate(reader):
-    #             self.data[idx] = [pt for pt in line]
-
-    #     print(self.data)
