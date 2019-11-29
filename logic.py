@@ -1,14 +1,16 @@
 import itertools
 import random
-import uuid
+import json
 
 
 class Grid():
-    def __init__(self, size):
-        self.grid = [[-1] * size] * size
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+        self.grid = [[-1] * width] * height
 
-    def populate(self, objs):
-        for _, obj in objs.items():
+    def populate(self, objects):
+        for _, obj in objects.items():
             i, j = obj.loc
             self.grid[i][j] = obj.id
 
@@ -22,11 +24,12 @@ class Grid():
 
 
 class Fog():
-    def __init__(self, location, radius, grid_size):
-        self.id = uuid.uuid1()
+    def __init__(self, id_, location, radius, width, height):
+        self.id = id_
         self.loc = location
         self.radius = radius
-        self.grid_size = grid_size
+        self.width = width
+        self.height = height
 
         self.points = self._gen_points()
         self.objects = set()
@@ -36,9 +39,9 @@ class Fog():
         j_list = []
         i, j = self.loc
         for x in range(-self.radius, self.radius + 1, 1):
-            if (i + x) >= 0 and (i + x) < self.grid_size:
+            if (i + x) >= 0 and (i + x) < self.height:
                 i_list.append(i + x)
-            if (j + x) >= 0 and (j + x) < self.grid_size:
+            if (j + x) >= 0 and (j + x) < self.width:
                 j_list.append(j + x)
         inputdata = [
             i_list,
@@ -61,22 +64,14 @@ class Fog():
 
 
 class Object():
-    def __init__(self, pid, starting_location):
-        self.id = pid
+    def __init__(self, id_, starting_location, route=None):
+        self.id = id_
         self.starting_location = starting_location
         self.loc = starting_location
 
+        self.route = route
         self.connection = False
         self.fog = None
-        self.routes = None
-
-    def generate_routes(self, num_points):
-        self.routes = [self.starting_location]
-
-        for n in range(num_points):
-            r = random.randrange(0, 2)
-            i, j = self.routes[-1]
-            self.routes.append((i + (1 - r), j + r))
 
     def update_loc(self, location):
         self.loc = location
@@ -85,7 +80,16 @@ class Object():
 class Configuration():
     def __init__(self, path=None):
         self.path = path
-        self.data = {}
+        self.configdict = {}
 
     def update_path(self, path):
         self.path = path
+
+    def parse(self):
+        with open(self.path, "r") as json_file:
+            self.configdict = json.load(json_file)
+
+        dimensions = self.configdict["dimensions"]
+        fogs = self.configdict["fogs"]
+        cars = self.configdict["cars"]
+        print('world dimensions: width = {}, height = {}'.format(dimensions["width"], dimensions["height"]))
