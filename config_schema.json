@@ -1,0 +1,124 @@
+{
+    "type": "object",
+    "properties": {
+        "broker": {
+            "type": "object",
+            "properties": {
+                "url": {
+                    "type": "string"
+                },
+                "port": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "url",
+                "port"
+            ]
+        },
+        "dimensions": {
+            "type": "object",
+            "properties": {
+                "width": {
+                    "type": "integer"
+                },
+                "height": {
+                    "type": "integer"
+                }
+            },
+            "required": [
+                "width",
+                "height"
+            ]
+        },
+        "fogs": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "location": {
+                        "type": "object",
+                        "properties": {
+                            "x": {
+                                "type": "integer"
+                            },
+                            "y": {
+                                "type": "integer"
+                            }
+                        },
+                        "required": [
+                            "x",
+                            "y"
+                        ]
+                    },
+                    "radius": {
+                        "type": "integer"
+                    }
+                },
+                "required": [
+                    "id",
+                    "location",
+                    "radius"
+                ]
+            }
+        },
+        "cars": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "starting_location": {
+                        "type": "object",
+                        "properties": {
+                            "x": {
+                                "type": "integer"
+                            },
+                            "y": {
+                                "type": "integer"
+                            }
+                        },
+                        "required": [
+                            "x",
+                            "y"
+                        ]
+                    },
+                    "route": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "x": {
+                                    "type": "integer"
+                                },
+                                "y": {
+                                    "type": "integer"
+                                }
+                            },
+                            "required": [
+                                "x",
+                                "y"
+                            ]
+                        }
+                    }
+                },
+                "required": [
+                    "id",
+                    "starting_location",
+                    "route"
+                ]
+            }
+        }
+    },
+    "required": [
+        "broker",
+        "dimensions",
+        "fogs",
+        "cars"
+    ]
+}
