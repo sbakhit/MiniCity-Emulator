@@ -64,7 +64,7 @@ class Fog():
 
 
 class Object():
-    def __init__(self, id_, starting_location, route=None):
+    def __init__(self, id_, starting_location, route=None, stationary=False):
         self.id = id_
         self.starting_location = starting_location
         self.loc = starting_location
