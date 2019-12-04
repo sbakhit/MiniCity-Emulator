@@ -78,7 +78,7 @@ class Window(Frame):
         self.fogs = generate_fogs(self.config.configdict["fogs"], width, height)
 
         print('Creating objects...')
-        self.cars = generate_cars(self.config.configdict["cars"])
+        self.cars = generate_cars(self.config.configdict["objects"])
 
         print('Creating clients...')
         client_ids = [id_ for id_ in self.cars.keys()]
@@ -92,19 +92,6 @@ class Window(Frame):
         publisher_thread = threading.Thread(target=publish, args=(self.world, self.cars, self.fogs, broker_url, int(broker_port)))
         publisher_thread.start()
         publisher_thread.join()
-
-        # connection_status = []
-        # for _, car in self.cars.items():
-        #     car.connection = True
-        #     connection_status.append(True)
-        
-        # while True in connection_status:
-        #     connection_status = []
-        #     for car_id, car in self.cars.items():
-        #         fog_id = car.fog.id if car.fog else -1
-        #         print(car_id, car.loc, fog_id, car.connection)
-
-        #         connection_status.append(car.connection)
 
         print('DONE!')
         # kill client processes

@@ -49,13 +49,6 @@ class Fog():
         ]
         return set(itertools.product(*inputdata))
 
-    def update_loc(self, location):
-        self.loc = location
-
-    def update_radius(self, radius):
-        self.radius = radius
-        self.points = self._gen_points()
-
     def add_object(self, obj):
         self.objects.add(obj)
 
@@ -90,6 +83,4 @@ class Configuration():
             self.configdict = json.load(json_file)
 
         dimensions = self.configdict["dimensions"]
-        fogs = self.configdict["fogs"]
-        cars = self.configdict["cars"]
         print('world dimensions: width = {}, height = {}'.format(dimensions["width"], dimensions["height"]))

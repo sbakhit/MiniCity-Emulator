@@ -49,7 +49,7 @@
       "radius": 1
     }
   ],
-  "cars": [
+  "objects": [
     {
       "starting_location" : {
         "y" : 290,

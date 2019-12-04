@@ -65,7 +65,7 @@
                 ]
             }
         },
-        "cars": {
+        "objects": {
             "type": "array",
             "items": {
                 "type": "object",

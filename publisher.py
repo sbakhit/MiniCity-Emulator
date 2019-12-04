@@ -70,3 +70,65 @@ def publish(world, cars, fogs, broker_url, broker_port):
     # close files
     for id_, f in log_files.items():
         f.close()
+
+
+# command line script to start the process without the GUI
+if __name__ == "__main__":
+    import sys
+    import os
+    from logic import Grid, Fog, Object, Configuration
+    from helpers import generate_fogs, generate_cars, assign_objects_fog, start_clients, stop_clients
+
+    def run_script():
+        '''
+        - parse config file
+        - connect
+        '''
+        print('parsing configuration file...')
+        config.parse()
+        broker_url = config.configdict["broker"]["url"]
+        broker_port = config.configdict["broker"]["port"]
+        width = config.configdict["dimensions"]["width"]
+        height = config.configdict["dimensions"]["height"]
+
+        print('Initializing world parameters')
+        print('Creating grid...')
+        world = Grid(width=width, height=height)
+
+        print('Creating fogs...')
+        fogs = generate_fogs(config.configdict["fogs"], width, height)
+
+        print('Creating objects...')
+        cars = generate_cars(config.configdict["objects"])
+
+        print('Creating clients...')
+        client_ids = [id_ for id_ in cars.keys()]
+        clients = start_clients(client_ids, broker_url, broker_port)
+
+        print('Populating world...')
+        world.populate(cars)
+        assign_objects_fog(fogs, cars)
+
+        print('running..')
+        for _, car in cars.items():
+            car.connection = True
+        publish(world, cars, fogs, broker_url, int(broker_port))
+
+        print('DONE!')
+        # kill client processes
+        stop_clients(clients)
+
+    #############START OF PROCESS#############
+    if len(sys.argv) < 2:
+        print('configuration file missing')
+        exit(1)
+    elif not os.path.isfile(sys.argv[1]):
+        print('configuration file not found')
+        exit(1)
+
+    # world variables
+    config = Configuration()
+    config.update_path(sys.argv[1])
+
+    run_script()
+    #############END OF PROCESS#############
